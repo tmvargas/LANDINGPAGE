@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Acesso | PlanSmart{% endblock %}
+{% block body %}
+<main class="auth-shell">
+  <a class="brand" href="{{ url_for('public.home') }}"><span class="brand-mark" aria-hidden="true">P</span><span>PlanSmart</span></a>
+  <section class="auth-card" aria-labelledby="login-title">
+    <p class="eyebrow">Área do cliente</p>
+    <h1 id="login-title">Acesse suas aplicações.</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<p class="alert {{ category }}" role="alert">{{ message }}</p>{% endfor %}{% endwith %}
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      <label for="email">{{ form.email.label }}</label>
+      {{ form.email(id="email", autocomplete="email", autofocus=true) }}
+      {% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      <label for="password">{{ form.password.label }}</label>
+      {{ form.password(id="password", autocomplete="current-password") }}
+      {% for error in form.password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      {{ form.submit(class="primary-action") }}
+    </form>
+  </section>
+</main>
+{% endblock %}

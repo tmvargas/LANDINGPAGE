@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Minhas aplicações | PlanSmart{% endblock %}
+{% block body %}
+<main class="auth-shell applications-page">
+  <header class="account-header">
+    <a class="brand" href="{{ url_for('public.home') }}"><span class="brand-mark" aria-hidden="true">P</span><span>PlanSmart</span></a>
+    <form method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="text-button" type="submit">Sair</button></form>
+  </header>
+  <section aria-labelledby="apps-title">
+    <p class="eyebrow">Área do cliente</p>
+    <h1 id="apps-title">Olá, {{ current_user.name }}.</h1>
+    {% if applications %}
+      <div class="application-grid">{% for application in applications %}<a class="application-card" href="{{ application.url }}"><h2>{{ application.name }}</h2><p>{{ application.description }}</p><span>Acessar →</span></a>{% endfor %}</div>
+    {% else %}
+      <div class="empty-state"><h2>Nenhuma aplicação liberada.</h2><p>Fale com a PlanSmart para solicitar acesso.</p></div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}
