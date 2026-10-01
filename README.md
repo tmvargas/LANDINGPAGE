@@ -1,11 +1,21 @@
 # LANDINGPAGE PlanSmart
 
-Página institucional estática da PlanSmart.
+Aplicação Flask institucional da PlanSmart, com PostgreSQL, autenticação e
+controle de acesso às aplicações da empresa.
 
 ## Executar localmente
 
 ```bash
-python3 -m http.server 8080
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements-dev.txt
+export FLASK_APP=run.py
+export FLASK_ENV=development
+export SECRET_KEY='configure-em-segredo'
+export DATABASE_URL='postgresql://usuario:senha@host/banco'
+flask run --port 5106
 ```
 
-Acesse `http://127.0.0.1:8080`.
+Staging e produção devem usar bancos, usuários, variáveis, serviços, checkouts,
+logs e portas separados. Não execute migrations sem a autorização específica
+registrada na tarefa.
