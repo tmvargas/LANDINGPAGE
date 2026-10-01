@@ -1,27 +1,59 @@
 {% extends "base.html" %}
 {% block body %}
-<header class="site-header">
-  <a class="brand" href="#inicio" aria-label="PlanSmart — início"><span class="brand-mark" aria-hidden="true">P</span><span>PlanSmart</span></a>
-  <a class="login-link" href="{{ url_for('auth.login') }}">Acessar aplicações</a>
-</header>
-<main id="inicio">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-copy">
-      <p class="eyebrow">Consultoria e tecnologia</p>
-      <h1 id="hero-title">Gestão inteligente para transformar resultados.</h1>
-      <p class="intro">Soluções em consultoria, desenvolvimento de sistemas e produtos digitais que conectam estratégia, processos e informação.</p>
-      <a class="primary-action" href="mailto:contato@plansmart.com.br">Fale com a PlanSmart</a>
-    </div>
-    <div class="services" aria-label="Áreas de atuação">
-      <article><span>01</span><h2>Consultoria</h2><p>Estratégia e processos para uma operação mais eficiente.</p></article>
-      <article><span>02</span><h2>Sistemas sob demanda</h2><p>Tecnologia criada para os desafios reais do seu negócio.</p></article>
-      <article><span>03</span><h2>Produtos PlanSmart</h2><p>Soluções digitais que simplificam decisões e rotinas.</p></article>
-    </div>
-  </section>
-  <section class="access" id="acesso" aria-labelledby="access-title">
-    <div><p class="eyebrow">Área do cliente</p><h2 id="access-title">Suas aplicações, em um só lugar.</h2></div>
-    <p>Entre com sua conta PlanSmart para visualizar somente as aplicações liberadas para você.</p>
-  </section>
-</main>
-<footer><span>© 2026 PlanSmart</span><span>Consultoria e Desenvolvimento de Sistemas</span></footer>
+<div class="landing-shell">
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="PlanSmart — início">
+      <span class="brand-symbol" aria-hidden="true"><i></i><i></i></span><span>PlanSmart</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <a href="#solucoes">Soluções</a><a href="#segmentos">Segmentos</a><a href="#sobre">Sobre</a><a href="mailto:contato@plansmart.com.br">Contato</a>
+    </nav>
+    <a class="header-action" href="mailto:contato@plansmart.com.br">Falar com um especialista <span>→</span></a>
+  </header>
+
+  <main id="inicio">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title"><em>Consultoria + Tecnologia</em><br>para transformar<br>a gestão da sua empresa.</h1>
+        <p>Organizamos processos, saneamos dados e implantamos inteligência gerencial com acompanhamento especializado.</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="mailto:contato@plansmart.com.br">Falar com um especialista <span>→</span></a>
+          <a class="secondary-action" href="#solucoes">Conheça a plataforma <span>→</span></a>
+        </div>
+      </div>
+
+      <div class="ecosystem" id="solucoes" aria-label="Ecossistema de soluções PlanSmart">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="hub"><span class="brand-symbol large" aria-hidden="true"><i></i><i></i></span><strong>PlanSmart</strong><small>Plataforma de Inteligência<br>Gerencial</small></div>
+        <article class="solution consulting"><span class="solution-icon">♙</span><strong>Consultoria</strong></article>
+        <article class="solution voice"><span class="solution-icon">▥</span><strong>PS Voice</strong><small>Inteligência em voz</small></article>
+        <article class="solution sales"><span class="solution-icon">↗</span><strong>Comercial</strong><small>Vendas e relacionamento</small></article>
+        <article class="solution engineering"><span class="solution-icon">⌂</span><strong>Engenharia</strong><small>Obras e projetos</small></article>
+        <article class="solution receivable"><span class="solution-icon">▤</span><strong>Contas a Receber</strong><small>Controle e previsibilidade</small></article>
+        <article class="solution payable"><span class="solution-icon">▱</span><strong>Contas a Pagar</strong><small>Gestão e eficiência</small></article>
+        <article class="solution supply"><span class="solution-icon">◇</span><strong>Suprimentos</strong><small>Compras e estoque</small></article>
+        <div class="consulting-notes"><span>✓ Diagnóstico e planejamento</span><span>✓ Organização de processos</span><span>✓ Acompanhamento especializado</span></div>
+      </div>
+    </section>
+
+    <section class="journey" id="segmentos" aria-label="Etapas do trabalho PlanSmart">
+      <article><span class="step-icon">⌕</span><div><strong>Diagnóstico</strong><small>Entendemos sua realidade</small></div><b>→</b></article>
+      <article><span class="step-icon">⚙</span><div><strong>Implantação</strong><small>Organizamos e estruturamos</small></div><b>→</b></article>
+      <article><span class="step-icon">▥</span><div><strong>Indicadores</strong><small>Geramos inteligência</small></div><b>→</b></article>
+      <article><span class="step-icon">♙</span><div><strong>Acompanhamento</strong><small>Evolução contínua com especialistas</small></div></article>
+    </section>
+
+    <section class="benefits" id="sobre" aria-label="Benefícios PlanSmart">
+      <article><span>▤</span><div><strong>Processos organizados</strong><p>Mais controle, eficiência<br>e produtividade.</p></div></article>
+      <article><span>♢</span><div><strong>Dados confiáveis</strong><p>Informações seguras<br>para uma gestão sólida.</p></div></article>
+      <article><span>▥</span><div><strong>Decisões com inteligência</strong><p>Visão clara para crescer<br>com mais segurança.</p></div></article>
+    </section>
+
+    <section class="client-access" aria-labelledby="access-title">
+      <div><span>Área do cliente</span><h2 id="access-title">Todas as suas aplicações em um só lugar.</h2></div>
+      <a href="{{ url_for('auth.login') }}">Acessar aplicações <b>→</b></a>
+    </section>
+  </main>
+  <footer><span>© 2026 PlanSmart</span><span>Consultoria e Desenvolvimento de Sistemas</span></footer>
+</div>
 {% endblock %}

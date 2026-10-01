@@ -11,7 +11,8 @@ def test_home_preserves_public_content():
     response = client.get("/")
 
     assert response.status_code == 200
-    assert "Gestão inteligente" in response.text
+    assert "Consultoria + Tecnologia" in response.text
+    assert "Plataforma de Inteligência" in response.text
     assert "Acessar aplicações" in response.text
 
 
