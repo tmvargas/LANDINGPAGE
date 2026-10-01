@@ -1,0 +1,18 @@
+[Unit]
+Description=PlanSmart LANDINGPAGE staging
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/plansmart/sistemas/landingpage-staging
+EnvironmentFile=/etc/plansmart/landingpage-staging.env
+ExecStart=/opt/plansmart/sistemas/landingpage-staging/venv/bin/gunicorn --workers 2 --bind 127.0.0.1:5106 --access-logfile - --error-logfile - run:app
+Restart=on-failure
+RestartSec=5
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

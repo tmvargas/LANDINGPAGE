@@ -1,1 +1,8 @@
 evidence/
+.env
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
