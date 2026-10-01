@@ -18,7 +18,8 @@ class BaseConfig:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
     PERMANENT_SESSION_LIFETIME = timedelta(hours=8)
-    WTF_CSRF_TIME_LIMIT = timedelta(hours=2)
+    # Flask-WTF encaminha este valor ao itsdangerous como max_age em segundos.
+    WTF_CSRF_TIME_LIMIT = 2 * 60 * 60
 
 
 class DevelopmentConfig(BaseConfig):
