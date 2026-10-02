@@ -1,4 +1,5 @@
 from flask import Flask
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.config import config_by_name
 from app.db import bcrypt, csrf, db, login_manager, migrate
@@ -8,6 +9,7 @@ def create_app(config_name: str | None = None) -> Flask:
     app = Flask(__name__)
     selected_config = config_name or app.config.get("ENV", "production")
     app.config.from_object(config_by_name.get(selected_config, config_by_name["production"]))
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
     db.init_app(app)
     migrate.init_app(app, db)
