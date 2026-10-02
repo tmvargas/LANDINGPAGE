@@ -46,3 +46,17 @@ def test_invalid_login_with_valid_csrf_returns_feedback():
 
     assert response.status_code == 200
     assert "E-mail ou senha inválidos." in response.text
+
+
+def test_staging_prefix_is_applied_to_generated_urls():
+    app = create_app("testing")
+    client = app.test_client()
+
+    response = client.get(
+        "/",
+        headers={"X-Forwarded-Prefix": "/staging/landingpage"},
+    )
+
+    assert response.status_code == 200
+    assert 'href="/staging/landingpage/acesso/login"' in response.text
+    assert 'href="/staging/landingpage/static/css/styles.css"' in response.text
