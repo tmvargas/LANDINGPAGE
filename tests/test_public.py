@@ -13,6 +13,7 @@ def test_home_preserves_public_content():
     assert response.status_code == 200
     assert "Consultoria + Tecnologia" in response.text
     assert "Plataforma de Inteligência" in response.text
+    assert "Contabilidade" in response.text
     assert "Acessar aplicações" in response.text
 
 
