@@ -14,6 +14,11 @@ def test_home_preserves_public_content():
     assert "Consultoria + Tecnologia" in response.text
     assert "Plataforma de Inteligência" in response.text
     assert "Contabilidade" in response.text
+    assert 'href="#consultoria"' in response.text
+    assert 'href="#produtos"' in response.text
+    assert 'href="#sistemas"' in response.text
+    assert "Dashboard de Gestão Integrada" in response.text
+    assert "Sistemas sob demanda" in response.text
     assert "Acessar aplicações" in response.text
 
 
