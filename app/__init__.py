@@ -21,9 +21,11 @@ def create_app(config_name: str | None = None) -> Flask:
     from app import models  # noqa: F401
 
     from app.controllers.auth_controller import auth_bp
+    from app.controllers.presentation_controller import presentation_bp
     from app.controllers.public_controller import public_bp
 
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(presentation_bp)
 
     return app
