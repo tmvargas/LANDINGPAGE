@@ -1,4 +1,5 @@
 import re
+import os
 from unittest.mock import patch
 
 from app import create_app
@@ -66,3 +67,11 @@ def test_staging_prefix_is_applied_to_generated_urls():
     assert response.status_code == 200
     assert 'href="/staging/landingpage/acesso/login"' in response.text
     assert 'href="/staging/landingpage/static/css/styles.css"' in response.text
+
+
+def test_staging_environment_allows_session_cookie_over_http():
+    with patch.dict(os.environ, {"APP_ENV": "staging"}):
+        app = create_app()
+
+    assert app.config["SESSION_COOKIE_SECURE"] is False
+    assert app.config["TESTING"] is False

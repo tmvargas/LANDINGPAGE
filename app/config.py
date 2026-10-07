@@ -34,12 +34,17 @@ class TestingConfig(BaseConfig):
     WTF_CSRF_ENABLED = False
 
 
+class StagingConfig(BaseConfig):
+    SESSION_COOKIE_SECURE = False
+
+
 class ProductionConfig(BaseConfig):
     SESSION_COOKIE_SECURE = True
 
 
 config_by_name = {
     "development": DevelopmentConfig,
+    "staging": StagingConfig,
     "testing": TestingConfig,
     "production": ProductionConfig,
 }
