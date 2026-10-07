@@ -55,6 +55,20 @@ def test_invalid_login_with_valid_csrf_returns_feedback():
     assert "E-mail ou senha inválidos." in response.text
 
 
+def test_login_accepts_six_character_password_for_legacy_account():
+    app = create_app("testing")
+    client = app.test_client()
+
+    with patch("app.controllers.auth_controller.AuthService.authenticate", return_value=None) as authenticate:
+        response = client.post(
+            "/acesso/login",
+            data={"email": "thiago@example.com", "password": "123456"},
+        )
+
+    assert response.status_code == 200
+    authenticate.assert_called_once_with("thiago@example.com", "123456")
+
+
 def test_staging_prefix_is_applied_to_generated_urls():
     app = create_app("testing")
     client = app.test_client()
