@@ -1,60 +1,86 @@
 {% extends "base.html" %}
-{% block title %}Consultoria PlanSmart | Apresentação{% endblock %}
+{% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
 {% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css') }}">{% endblock %}
 {% block body %}
-<div class="proposal-shell">
-  <header class="proposal-header">
-    <a class="proposal-brand" href="#inicio" aria-label="PlanSmart — início"><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
-    <nav aria-label="Navegação da apresentação"><a href="#desafio">Desafios</a><a href="#atuacao">Atuação</a><a href="#metodo">Método</a><a href="#tecnologia">Tecnologia</a></nav>
-    <a class="proposal-header-cta" href="#proximo-passo">Construir o plano <span>→</span></a>
+{% set areas = [
+  ('financeiro', 'Financeiro', [
+    ('Contas a pagar', ['Fluxo do contas a pagar','Formas de lançamento: pedido, contrato, previsão e títulos','Controle de adiantamento','Controle de saldo de credores','Documentos vencidos e baixas','Automação de processos','Pagamento escritural e DDA']),
+    ('Contas a receber', ['Fluxo do contas a receber','Origem e títulos','Particularidades do processo','Investidores','Crédito associativo','Automação de processos','Cobrança escritural']),
+    ('Conciliação bancária', ['Mapeamento de contas ativas','Janelas de conciliação','Consistência de saldo','Automação de processos','Plano de ação'])
+  ]),
+  ('comercial', 'Comercial', [
+    ('Comercial', ['Unidades','Controle de contratos','Levantamento','Lançamento','Auditoria'])
+  ]),
+  ('seguranca', 'Segurança', [
+    ('Sienge Plataforma', ['Levantamento de usuários','Levantamento de perfis','Levantamento de autorizações: empresa, obra, suprimentos, financeiro e centro de custo','Gestão de usuários']),
+    ('Sienge Integração', ['Análise da documentação de sistemas parceiros','Cadastro de usuário com validação crítica em Cyber Segurança','Liberação de endpoint','Ambiente para controle de APIs e datalake com acesso por usuário'])
+  ]),
+  ('gerencial', 'Gerencial', [
+    ('Gestão gerencial', ['Gerencial financeiro','Gerencial de obras','Gerencial de suprimentos','Produtos PlanSmart','Desenvolvimento sob demanda']),
+    ('Viabilidade de negócios', ['Viabilidade de empreendimento','Acompanhamento de viabilidade']),
+    ('Orçamento empresarial', ['Estruturação com base de backoffice definida','Montagem do orçamento empresarial anual'])
+  ]),
+  ('contabilidade', 'Contabilidade', [
+    ('Integração contábil', ['Acompanhamento de todo o processo para integração contábil','Plano contábil','Configuração de documentos','Estabilização de layout'])
+  ]),
+  ('suprimentos', 'Suprimentos', [
+    ('Compras', ['Processo de compras','Alçadas e autorizações']),
+    ('Contratos e medições', ['Processo de contratos e medições','Alçadas e autorizações']),
+    ('Controle de estoque', ['Estruturação','Implantação','Acompanhamento'])
+  ]),
+  ('processos', 'Análise, diagnóstico e estruturação de processos', [
+    ('Análise e diagnóstico', ['Entendimento da estrutura de negócios da empresa','Dores e metas','Projeção para o futuro']),
+    ('Reestruturação', ['Estrutura de empresas','Estrutura de obras','Estrutura de centro de custos','Estrutura de unidades construtivas','Plano financeiro','Plano contábil']),
+    ('Parametrização da base', ['Parâmetros do plano financeiro','Parâmetros do sistema','Rotinas específicas para performance de lançamentos']),
+    ('Sanitização e processos mensais', ['Usuários ativos','Previsões financeiras','Títulos em aberto','Contas bancárias ativas','Treinamentos e montagem de procedimentos','Ajuste de processos'])
+  ]),
+  ('engenharia', 'Engenharia e controle de custo', [
+    ('Insumos', ['Forma de cadastro','Unidade de medida','Unidade de movimento','Grupo','Plano financeiro']),
+    ('Serviços', ['Conceito de preço informado','Conceito de preço composto','Conceito de serviço auxiliar']),
+    ('Orçamento', ['Lançamento e manutenção','Acompanhamento e evolução'])
+  ]),
+  ('automacao', 'Automação nativa Sienge', [
+    ('Automação bancária', ['Desenvolvimento de layout bancário','Cobrança escritural','Pagamento escritural','DDA','Conciliação bancária'])
+  ])
+] %}
+<div class="scope-shell">
+  <header class="scope-header">
+    <a href="#visao-geral" class="scope-brand"><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
+    <nav aria-label="Áreas da apresentação">
+      {% for slug, title, planets in areas %}<a href="#{{ slug }}">{{ title }}</a>{% endfor %}
+    </nav>
+    <span class="scope-private">Apresentação privada</span>
   </header>
 
-  <main id="inicio">
-    <section class="proposal-hero">
-      <div class="proposal-hero-copy">
-        <p class="proposal-kicker">Consultoria PlanSmart</p>
-        <h1>Gestão estruturada.<br><em>Decisões mais inteligentes.</em></h1>
-        <p class="proposal-lead">Transformamos processos, dados e rotinas em uma operação previsível, conectada e preparada para crescer.</p>
-        <div class="proposal-actions"><a class="proposal-primary" href="#atuacao">Conhecer a solução <span>→</span></a><a class="proposal-secondary" href="#metodo">Como trabalhamos</a></div>
-        <div class="proposal-proof"><span><strong>Visão 360°</strong> da operação</span><span><strong>Método aplicado</strong> à rotina</span><span><strong>Evolução contínua</strong> com dados</span></div>
+  <main>
+    <section class="scope-intro" id="visao-geral">
+      <p class="eyebrow">Escopo da consultoria PlanSmart</p>
+      <h1>A empresa como um conjunto de <em>sistemas conectados.</em></h1>
+      <p class="scope-intro-copy">Cada núcleo abaixo representa uma área do negócio. Ao redor dele estão os sistemas e processos que serão analisados, estruturados, implantados e acompanhados.</p>
+      <div class="scope-index" aria-label="Mapa das áreas">
+        <div class="scope-index-core">PlanSmart<small>visão integrada</small></div>
+        {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}">{{ title }}</a>{% endfor %}
       </div>
-      <div class="proposal-hero-visual" aria-label="Ciclo de evolução da gestão">
-        <div class="proposal-halo halo-one"></div><div class="proposal-halo halo-two"></div>
-        <div class="proposal-core"><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt=""><strong>Inteligência<br>de gestão</strong></div>
-        <article class="proposal-orbit-item orbit-diagnosis"><b>01</b><span>Diagnóstico</span></article><article class="proposal-orbit-item orbit-process"><b>02</b><span>Processos</span></article><article class="proposal-orbit-item orbit-data"><b>03</b><span>Dados</span></article><article class="proposal-orbit-item orbit-action"><b>04</b><span>Ação</span></article>
-      </div>
+      <p class="scroll-hint">Explore o escopo por área <span>↓</span></p>
     </section>
 
-    <section class="proposal-challenge" id="desafio"><div><p class="proposal-kicker">O desafio</p><h2>Crescer sem perder o controle da operação.</h2></div><p>Quando processos dependem de pessoas específicas, os dados chegam tarde e cada área trabalha de um jeito, a gestão perde velocidade. A PlanSmart integra estratégia e execução para criar clareza, ritmo e responsabilidade.</p></section>
-
-    <section class="proposal-pillars" id="atuacao" aria-labelledby="pillars-title">
-      <div class="proposal-section-heading"><p class="proposal-kicker">Atuação integrada</p><h2 id="pillars-title">Uma consultoria que enxerga a empresa por inteiro.</h2><p>O escopo combina os eixos mapeados para organizar a operação e transformar informação em decisão.</p></div>
-      <div class="proposal-pillar-grid">
-        <article><span>01</span><h3>Financeiro</h3><p>Fluxo de caixa, contas a pagar e receber, cobrança, conciliação e previsibilidade financeira.</p></article>
-        <article><span>02</span><h3>Comercial</h3><p>Funil, metas, propostas, relacionamento e indicadores para uma operação de vendas mais consistente.</p></article>
-        <article><span>03</span><h3>Gerencial</h3><p>Indicadores executivos, rotinas de análise e visão consolidada para decisões rápidas e seguras.</p></article>
-        <article><span>04</span><h3>Segurança</h3><p>Perfis, responsabilidades, controles e rastreabilidade para reduzir riscos operacionais.</p></article>
-        <article><span>05</span><h3>Contabilidade</h3><p>Integração das informações, qualidade dos dados e aderência entre operação e fechamento.</p></article>
-        <article><span>06</span><h3>Suprimentos</h3><p>Compras, estoque, alçadas e acompanhamento do ciclo de contratação ao recebimento.</p></article>
-        <article><span>07</span><h3>Engenharia e custos</h3><p>Planejamento, orçamento, apropriação, medição e controle econômico de obras e projetos.</p></article>
-        <article><span>08</span><h3>Processos</h3><p>Análise, diagnóstico e estruturação de fluxos claros, responsáveis e indicadores de resultado.</p></article>
+    {% for slug, title, planets in areas %}
+    <section class="solar-section solar-{{ loop.index }}" id="{{ slug }}">
+      <div class="solar-heading"><span>0{{ loop.index }}</span><div><p>Área de atuação</p><h2>{{ title }}</h2></div></div>
+      <div class="solar-system planets-{{ planets|length }}">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="solar-core"><small>Núcleo</small><strong>{{ title }}</strong></div>
+        {% for planet_title, activities in planets %}
+        <article class="planet planet-{{ loop.index }}">
+          <div class="planet-head"><span>{{ '%02d'|format(loop.index) }}</span><h3>{{ planet_title }}</h3></div>
+          <ul>{% for activity in activities %}<li>{{ activity }}</li>{% endfor %}</ul>
+        </article>
+        {% endfor %}
       </div>
     </section>
+    {% endfor %}
 
-    <section class="proposal-method" id="metodo" aria-labelledby="method-title">
-      <div class="proposal-section-heading light"><p class="proposal-kicker">Método PlanSmart</p><h2 id="method-title">Da leitura do cenário à evolução mensurável.</h2></div>
-      <div class="proposal-method-grid"><article><b>01</b><div><h3>Diagnosticar</h3><p>Entender objetivos, gargalos, riscos e maturidade da operação.</p></div></article><article><b>02</b><div><h3>Priorizar</h3><p>Construir um plano de ação realista, orientado por impacto e esforço.</p></div></article><article><b>03</b><div><h3>Implantar</h3><p>Configurar processos, responsabilidades, controles e rotinas de gestão.</p></div></article><article><b>04</b><div><h3>Acompanhar</h3><p>Medir resultados, corrigir desvios e sustentar a melhoria contínua.</p></div></article></div>
-    </section>
-
-    <section class="proposal-tech" id="tecnologia" aria-labelledby="tech-title">
-      <div class="proposal-tech-copy"><p class="proposal-kicker">Consultoria + tecnologia</p><h2 id="tech-title">Quando o processo pede escala, a tecnologia entra em ação.</h2><p>Desenvolvemos integrações, automações e soluções sob medida para eliminar tarefas repetitivas, conectar dados e acelerar a operação.</p><div class="proposal-tech-tags"><span>Integrações</span><span>Dashboards</span><span>Aplicações web</span><span>Automações</span></div></div>
-      <div class="proposal-automation-card"><span>Automação nativa Sienge</span><h3>Mais produtividade no financeiro.</h3><ul><li>Distribuição de layout bancário</li><li>Cobrança escritural</li><li>Pagamento escritural</li><li>DDA e conciliação bancária</li></ul></div>
-    </section>
-
-    <section class="proposal-results" aria-labelledby="results-title"><div class="proposal-section-heading"><p class="proposal-kicker">Resultado esperado</p><h2 id="results-title">Uma empresa mais organizada, previsível e pronta para avançar.</h2></div><div class="proposal-result-grid"><article><strong>Clareza</strong><p>Papéis, processos e prioridades compreendidos por toda a equipe.</p></article><article><strong>Controle</strong><p>Indicadores confiáveis para acompanhar a operação sem improviso.</p></article><article><strong>Produtividade</strong><p>Menos retrabalho e mais foco nas atividades que geram resultado.</p></article><article><strong>Escala</strong><p>Uma base de gestão preparada para sustentar o crescimento.</p></article></div></section>
-
-    <section class="proposal-close" id="proximo-passo"><p class="proposal-kicker">Próximo passo</p><h2>Vamos transformar o diagnóstico em um plano de evolução?</h2><p>A proposta começa com uma conversa sobre cenário, prioridades e resultado esperado.</p><a href="mailto:contato@plansmart.com.br?subject=Apresentação%20Consultoria%20PlanSmart">Agendar conversa <span>→</span></a></section>
+    <section class="scope-end"><p class="eyebrow">Visão integral do trabalho</p><h2>Estrutura, sistema e rotina conectados no mesmo plano de execução.</h2><p>Documento de apresentação confidencial · PlanSmart</p></section>
   </main>
-  <footer class="proposal-footer"><span>Apresentação confidencial · PlanSmart</span><span>Consultoria e Desenvolvimento de Sistemas</span></footer>
 </div>
 {% endblock %}

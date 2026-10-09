@@ -53,7 +53,11 @@ def test_consulting_presentation_renders_for_authorized_user():
         response = client.get("/apresentacao/consultoria")
 
     assert response.status_code == 200
-    assert "Gestão estruturada." in response.text
+    assert "sistemas conectados" in response.text
     assert "Automação nativa Sienge" in response.text
-    assert "Engenharia e custos" in response.text
+    assert "Engenharia e controle de custo" in response.text
+    assert "Contas a pagar" in response.text
+    assert "Pagamento escritural e DDA" in response.text
+    assert "Contratos e medições" in response.text
+    assert "Agendar" not in response.text
     access.assert_called_once_with(1, "consultoria-ps")
