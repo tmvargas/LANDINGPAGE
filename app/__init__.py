@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask
+from flask import Flask, flash, redirect, request, url_for
+from flask_wtf.csrf import CSRFError
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.config import config_by_name
@@ -29,5 +30,13 @@ def create_app(config_name: str | None = None) -> Flask:
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(presentation_bp)
+
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(_error):
+        # Uma aba antiga ou um cookie substituído não deve expor um 400 técnico.
+        # Reinicia a sessão pelo formulário, preservando o destino solicitado.
+        flash("Sua sessão expirou. Entre novamente para continuar.", "error")
+        next_url = request.args.get("next")
+        return redirect(url_for("auth.login", next=next_url) if next_url else url_for("auth.login"))
 
     return app
