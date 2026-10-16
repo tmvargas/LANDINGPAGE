@@ -45,28 +45,31 @@
 ] %}
 <div class="scope-shell">
   <header class="scope-header">
-    <a href="#visao-geral" class="scope-brand"><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
+    <a href="#visao-geral" class="scope-brand" data-space-home><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
     <nav aria-label="Áreas da apresentação">
-      {% for slug, title, planets in areas %}<a href="#{{ slug }}">{{ title }}</a>{% endfor %}
+      {% for slug, title, planets in areas %}<a href="#{{ slug }}" data-space-target="{{ slug }}">{{ title }}</a>{% endfor %}
     </nav>
     <span class="scope-private">Apresentação privada</span>
   </header>
 
   <main>
-    <section class="scope-intro" id="visao-geral">
+    <section class="scope-intro space-view is-active" id="visao-geral" data-space-view="visao-geral">
       <p class="eyebrow">Escopo da consultoria PlanSmart</p>
       <h1>A empresa como um conjunto de <em>sistemas conectados.</em></h1>
       <p class="scope-intro-copy">Cada núcleo abaixo representa uma área do negócio. Ao redor dele estão os sistemas e processos que serão analisados, estruturados, implantados e acompanhados.</p>
       <div class="scope-index" aria-label="Mapa das áreas">
         <div class="scope-index-core">PlanSmart<small>visão integrada</small></div>
-        {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}">{{ title }}</a>{% endfor %}
+        {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}" data-space-target="{{ slug }}"><span>Explorar</span>{{ title }}</a>{% endfor %}
       </div>
-      <p class="scroll-hint">Explore o escopo por área <span>↓</span></p>
+      <p class="scroll-hint">Selecione um núcleo para viajar</p>
     </section>
 
     {% for slug, title, planets in areas %}
-    <section class="solar-section solar-{{ loop.index }}" id="{{ slug }}">
-      <div class="solar-heading"><span>0{{ loop.index }}</span><div><p>Área de atuação</p><h2>{{ title }}</h2></div></div>
+    <section class="solar-section solar-{{ loop.index }} space-view" id="{{ slug }}" data-space-view="{{ slug }}" aria-hidden="true">
+      <div class="solar-toolbar">
+        <a class="back-to-system" href="#visao-geral" data-space-home><span>←</span> Voltar ao sistema solar</a>
+        <div class="solar-heading"><span>0{{ loop.index }}</span><div><p>Núcleo selecionado</p><h2>{{ title }}</h2></div></div>
+      </div>
       <div class="solar-system planets-{{ planets|length }}">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
         <div class="solar-core"><small>Núcleo</small><strong>{{ title }}</strong></div>
@@ -80,7 +83,35 @@
     </section>
     {% endfor %}
 
-    <section class="scope-end"><p class="eyebrow">Visão integral do trabalho</p><h2>Estrutura, sistema e rotina conectados no mesmo plano de execução.</h2><p>Documento de apresentação confidencial · PlanSmart</p></section>
   </main>
 </div>
+<script>
+(() => {
+  const views = [...document.querySelectorAll('[data-space-view]')];
+  const allowed = new Set(views.map(view => view.dataset.spaceView));
+  const show = name => {
+    const destination = allowed.has(name) ? name : 'visao-geral';
+    views.forEach(view => {
+      const active = view.dataset.spaceView === destination;
+      view.classList.toggle('is-active', active);
+      view.setAttribute('aria-hidden', String(!active));
+    });
+    document.body.classList.toggle('exploring-nucleus', destination !== 'visao-geral');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+  document.querySelectorAll('[data-space-target]').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    const target = link.dataset.spaceTarget;
+    history.pushState(null, '', `#${target}`);
+    show(target);
+  }));
+  document.querySelectorAll('[data-space-home]').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    history.pushState(null, '', '#visao-geral');
+    show('visao-geral');
+  }));
+  window.addEventListener('popstate', () => show(location.hash.slice(1)));
+  show(location.hash.slice(1));
+})();
+</script>
 {% endblock %}
