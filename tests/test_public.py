@@ -90,6 +90,10 @@ def test_staging_environment_allows_session_cookie_over_http():
     assert app.config["SESSION_COOKIE_SECURE"] is False
     assert app.config["SESSION_COOKIE_NAME"] == "landingpage_session"
     assert app.config["SESSION_COOKIE_PATH"] == "/staging/landingpage"
+    assert app.config["SQLALCHEMY_ENGINE_OPTIONS"] == {
+        "pool_pre_ping": True,
+        "pool_recycle": 300,
+    }
     assert app.config["TESTING"] is False
 
 

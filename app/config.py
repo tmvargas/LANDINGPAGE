@@ -15,6 +15,9 @@ class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY", "")
     SQLALCHEMY_DATABASE_URI = _database_url() or "postgresql+psycopg://invalid/landingpage"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Descarta conexões encerradas por reinício/manutenção do PostgreSQL antes
+    # de entregá-las à requisição e evita conexões ociosas de longa duração.
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300}
     SESSION_COOKIE_HTTPONLY = True
     # O staging compartilha host e porta com outros sistemas Flask. Um nome
     # exclusivo impede que outra aplicação sobrescreva a sessão da LANDINGPAGE.
