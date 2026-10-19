@@ -15,7 +15,13 @@ class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY", "")
     SQLALCHEMY_DATABASE_URI = _database_url() or "postgresql+psycopg://invalid/landingpage"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Descarta conexões encerradas por reinício/manutenção do PostgreSQL antes
+    # de entregá-las à requisição e evita conexões ociosas de longa duração.
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300}
     SESSION_COOKIE_HTTPONLY = True
+    # O staging compartilha host e porta com outros sistemas Flask. Um nome
+    # exclusivo impede que outra aplicação sobrescreva a sessão da LANDINGPAGE.
+    SESSION_COOKIE_NAME = "landingpage_session"
     SESSION_COOKIE_SAMESITE = "Lax"
     PERMANENT_SESSION_LIFETIME = timedelta(hours=8)
     # Flask-WTF encaminha este valor ao itsdangerous como max_age em segundos.
@@ -34,12 +40,18 @@ class TestingConfig(BaseConfig):
     WTF_CSRF_ENABLED = False
 
 
+class StagingConfig(BaseConfig):
+    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_PATH = "/staging/landingpage"
+
+
 class ProductionConfig(BaseConfig):
     SESSION_COOKIE_SECURE = True
 
 
 config_by_name = {
     "development": DevelopmentConfig,
+    "staging": StagingConfig,
     "testing": TestingConfig,
     "production": ProductionConfig,
 }
