@@ -39,6 +39,10 @@
     ('Serviços', ['Conceito de preço informado','Conceito de preço composto','Conceito de serviço auxiliar']),
     ('Orçamento', ['Lançamento e manutenção','Acompanhamento e evolução'])
   ]),
+  ('desenvolvimento', 'Desenvolvimento', [
+    ('Desenvolvimento de sistemas e rotinas sob demanda', ['Planilhas de tabulação','Arquivos para importação e exportação Sienge','Input e output de dados']),
+    ('Produtos de gestão desenvolvidos pela PlanSmart', ['Gestão da Engenharia','Gestão Integrada','Contas a Receber','Contas a Pagar','Comercial','PS Mastermind','PS Voice','PS Finance'])
+  ]),
   ('automacao', 'Automação nativa Sienge', [
     ('Automação bancária', ['Desenvolvimento de layout bancário','Cobrança escritural','Pagamento escritural','DDA','Conciliação bancária'])
   ])
@@ -46,9 +50,6 @@
 <div class="scope-shell">
   <header class="scope-header">
     <a href="#visao-geral" class="scope-brand" data-space-home><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
-    <nav aria-label="Áreas da apresentação">
-      {% for slug, title, planets in areas %}<a href="#{{ slug }}" data-space-target="{{ slug }}">{{ title }}</a>{% endfor %}
-    </nav>
     <span class="scope-private">Apresentação privada</span>
   </header>
 
@@ -56,12 +57,11 @@
     <section class="scope-intro space-view is-active" id="visao-geral" data-space-view="visao-geral">
       <p class="eyebrow">Escopo da consultoria PlanSmart</p>
       <h1>A empresa como um conjunto de <em>sistemas conectados.</em></h1>
-      <p class="scope-intro-copy">Cada núcleo abaixo representa uma área do negócio. Ao redor dele estão os sistemas e processos que serão analisados, estruturados, implantados e acompanhados.</p>
+      <p class="scope-intro-copy">Os 10 núcleos representam as áreas do negócio. Em cada um deles, os 23 sistemas e processos detalham exatamente o trabalho que será executado.</p>
       <div class="scope-index" aria-label="Mapa das áreas">
-        <div class="scope-index-core">PlanSmart<small>visão integrada</small></div>
+        <div class="scope-index-core"><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"><small>visão integrada</small></div>
         {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}" data-space-target="{{ slug }}"><span>Explorar</span>{{ title }}</a>{% endfor %}
       </div>
-      <p class="scroll-hint">Selecione um núcleo para viajar</p>
     </section>
 
     {% for slug, title, planets in areas %}

@@ -59,8 +59,15 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert "Contas a pagar" in response.text
     assert "Pagamento escritural e DDA" in response.text
     assert "Contratos e medições" in response.text
+    assert "Desenvolvimento de sistemas e rotinas sob demanda" in response.text
+    assert "Planilhas de tabulação" in response.text
+    assert "PS Finance" in response.text
     assert "Voltar ao sistema solar" in response.text
     assert 'data-space-target="financeiro"' in response.text
     assert 'data-space-view="visao-geral"' in response.text
+    assert response.text.count('class="scope-index-planet ') == 10
+    assert response.text.count('class="planet planet-') == 23
+    assert "Selecione um núcleo para viajar" not in response.text
+    assert 'aria-label="Áreas da apresentação"' not in response.text
     assert "Agendar" not in response.text
     access.assert_called_once_with(1, "consultoria-ps")
