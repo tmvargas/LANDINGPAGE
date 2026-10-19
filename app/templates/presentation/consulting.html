@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261019d') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261019e') }}">{% endblock %}
 {% block body %}
 {% set areas = [
   ('financeiro', 'Financeiro', [
@@ -57,8 +57,8 @@
     <section class="scope-intro space-view is-active" id="visao-geral" data-space-view="visao-geral">
       <p class="eyebrow">Escopo da consultoria PlanSmart</p>
       <h1>A empresa como um conjunto de <em>sistemas conectados.</em></h1>
-      <p class="scope-intro-copy">Os 10 núcleos representam as áreas do negócio. Em cada um deles, os 23 sistemas e processos detalham exatamente o trabalho que será executado.</p>
       <div class="scope-index" aria-label="Mapa das áreas">
+        <div class="scope-index-orbit" aria-hidden="true"></div>
         <div class="scope-index-core"><strong>PlanSmart</strong><small>visão integrada</small></div>
         {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}" data-space-target="{{ slug }}"><span>Explorar</span>{{ title }}</a>{% endfor %}
       </div>
