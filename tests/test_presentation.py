@@ -92,7 +92,7 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert orbital_positions == sorted(orbital_positions)
     assert "Selecione um núcleo para viajar" not in response.text
     assert 'aria-label="Áreas da apresentação"' not in response.text
-    assert "presentation.css?v=20261019i" in response.text
+    assert "presentation.css?v=20261019j" in response.text
     assert "Os 10 núcleos representam" not in response.text
     assert 'class="scope-index-orbit"' in response.text
     assert 'class="scope-core-mark"' not in response.text
