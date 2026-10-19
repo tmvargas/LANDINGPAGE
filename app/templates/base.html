@@ -6,6 +6,7 @@
     <meta name="description" content="PlanSmart — consultoria e tecnologia para uma gestão mais inteligente." />
     <title>{% block title %}PlanSmart | Gestão inteligente{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    {% block head %}{% endblock %}
   </head>
   <body>
     {% block body %}{% endblock %}

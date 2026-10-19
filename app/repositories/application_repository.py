@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import exists, select
 
 from app.db import db
 from app.models.application import Application, user_applications
@@ -17,3 +17,14 @@ class ApplicationRepository:
             .order_by(Application.sort_order, Application.name)
         )
         return list(db.session.scalars(statement).all())
+
+    def user_has_access(self, user_id: int, application_code: str) -> bool:
+        statement = select(
+            exists().where(
+                Application.id == user_applications.c.application_id,
+                user_applications.c.user_id == user_id,
+                Application.code == application_code,
+                Application.is_active.is_(True),
+            )
+        )
+        return bool(db.session.scalar(statement))

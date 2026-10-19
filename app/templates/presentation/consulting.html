@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261019j') }}">{% endblock %}
+{% block body %}
+{% set areas = [
+  ('seguranca', 'Segurança', [
+    ('Sienge Plataforma', ['Levantamento de usuários','Levantamento de perfis','Levantamento de autorizações: empresa, obra, suprimentos, financeiro e centro de custo','Gestão de usuários']),
+    ('Sienge Integração', ['Análise da documentação de sistemas parceiros','Cadastro de usuário com validação crítica em Cyber Segurança','Liberação de endpoint','Ambiente para controle de APIs e datalake com acesso por usuário'])
+  ]),
+  ('configuracoes', 'Configurações e Parametrizações', [
+    ('Configurações e Parametrizações', ['Configurações de base','Estruturas de controle','Estruturas hierárquicas','Parametrizações','Parâmetros gerais do Sienge'])
+  ]),
+  ('processos', 'Análise, diagnóstico e estruturação de processos', [
+    ('Análise e diagnóstico', ['Entendimento da estrutura de negócios da empresa','Dores e metas','Projeção para o futuro']),
+    ('Reestruturação', ['Estrutura de empresas','Estrutura de obras','Estrutura de centro de custos','Estrutura de unidades construtivas','Plano financeiro','Plano contábil']),
+    ('Parametrização da base', ['Parâmetros do plano financeiro','Parâmetros do sistema','Rotinas específicas para performance de lançamentos']),
+    ('Sanitização e processos mensais', ['Usuários ativos','Previsões financeiras','Títulos em aberto','Contas bancárias ativas','Treinamentos e montagem de procedimentos','Ajuste de processos'])
+  ]),
+  ('engenharia', 'Engenharia e controle de custo', [
+    ('Insumos', ['Forma de cadastro','Unidade de medida','Unidade de movimento','Grupo','Plano financeiro']),
+    ('Serviços', ['Conceito de preço informado','Conceito de preço composto','Conceito de serviço auxiliar']),
+    ('Orçamento', ['Lançamento e manutenção','Acompanhamento e evolução'])
+  ]),
+  ('suprimentos', 'Suprimentos', [
+    ('Compras', ['Processo de compras','Alçadas e autorizações']),
+    ('Contratos e medições', ['Processo de contratos e medições','Alçadas e autorizações']),
+    ('Controle de estoque', ['Estruturação','Implantação','Acompanhamento'])
+  ]),
+  ('comercial', 'Comercial', [
+    ('Comercial', ['Unidades','Controle de contratos','Levantamento','Lançamento','Auditoria'])
+  ]),
+  ('financeiro', 'Financeiro', [
+    ('Contas a pagar', ['Fluxo do contas a pagar','Formas de lançamento: pedido, contrato, previsão e títulos','Controle de adiantamento','Controle de saldo de credores','Documentos vencidos e baixas','Automação de processos','Pagamento escritural e DDA']),
+    ('Contas a receber', ['Fluxo do contas a receber','Origem e títulos','Particularidades do processo','Investidores','Crédito associativo','Automação de processos','Cobrança escritural']),
+    ('Conciliação bancária', ['Mapeamento de contas ativas','Janelas de conciliação','Consistência de saldo','Automação de processos','Plano de ação'])
+  ]),
+  ('automacao', 'Automação nativa Sienge', [
+    ('Automação bancária', ['Desenvolvimento de layout bancário','Cobrança escritural','Pagamento escritural','DDA','Conciliação bancária'])
+  ]),
+  ('gerencial', 'Gerencial', [
+    ('Gestão gerencial', ['Gerencial financeiro','Gerencial de obras','Gerencial de suprimentos','Produtos PlanSmart','Desenvolvimento sob demanda']),
+    ('Viabilidade de negócios', ['Viabilidade de empreendimento','Acompanhamento de viabilidade']),
+    ('Orçamento empresarial', ['Estruturação com base de backoffice definida','Montagem do orçamento empresarial anual'])
+  ]),
+  ('contabilidade', 'Contabilidade', [
+    ('Integração contábil', ['Acompanhamento de todo o processo para integração contábil','Plano contábil','Configuração de documentos','Estabilização de layout'])
+  ]),
+  ('desenvolvimento', 'Desenvolvimento', [
+    ('Desenvolvimento de sistemas e rotinas sob demanda', ['Planilhas de tabulação','Arquivos para importação e exportação Sienge','Input e output de dados']),
+    ('Produtos de gestão desenvolvidos pela PlanSmart', ['Gestão da Engenharia','Gestão Integrada','Contas a Receber','Contas a Pagar','Comercial','PS Mastermind','PS Voice','PS Finance'])
+  ])
+] %}
+<div class="scope-shell">
+  <header class="scope-header">
+    <a href="#visao-geral" class="scope-brand" data-space-home><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
+    <span class="scope-private">Apresentação privada</span>
+  </header>
+
+  <main>
+    <section class="scope-intro space-view is-active" id="visao-geral" data-space-view="visao-geral">
+      <p class="eyebrow">Escopo da consultoria PlanSmart</p>
+      <h1>A empresa como um conjunto de <em>sistemas conectados.</em></h1>
+      <div class="scope-index" aria-label="Mapa das áreas">
+        <div class="scope-index-orbit" aria-hidden="true"></div>
+        <div class="scope-index-core"><strong>PlanSmart</strong><small>visão integrada</small></div>
+        {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}" data-space-target="{{ slug }}"><span>Explorar</span>{{ title }}</a>{% endfor %}
+      </div>
+    </section>
+
+    {% for slug, title, planets in areas %}
+    <section class="solar-section solar-{{ loop.index }} space-view" id="{{ slug }}" data-space-view="{{ slug }}" aria-hidden="true">
+      <div class="solar-toolbar">
+        <a class="back-to-system" href="#visao-geral" data-space-home><span>←</span> Voltar ao sistema solar</a>
+        <div class="solar-heading"><span>0{{ loop.index }}</span><div><p>Núcleo selecionado</p><h2>{{ title }}</h2></div></div>
+      </div>
+      <div class="solar-system planets-{{ planets|length }}">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="solar-core"><small>Núcleo</small><strong>{{ title }}</strong></div>
+        {% for planet_title, activities in planets %}
+        <article class="planet planet-{{ loop.index }}">
+          <div class="planet-head"><span>{{ '%02d'|format(loop.index) }}</span><h3>{{ planet_title }}</h3></div>
+          <ul>{% for activity in activities %}<li>{{ activity }}</li>{% endfor %}</ul>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+
+  </main>
+</div>
+<script>
+(() => {
+  const views = [...document.querySelectorAll('[data-space-view]')];
+  const allowed = new Set(views.map(view => view.dataset.spaceView));
+  const show = name => {
+    const destination = allowed.has(name) ? name : 'visao-geral';
+    views.forEach(view => {
+      const active = view.dataset.spaceView === destination;
+      view.classList.toggle('is-active', active);
+      view.setAttribute('aria-hidden', String(!active));
+    });
+    document.body.classList.toggle('exploring-nucleus', destination !== 'visao-geral');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+  document.querySelectorAll('[data-space-target]').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    const target = link.dataset.spaceTarget;
+    history.pushState(null, '', `#${target}`);
+    show(target);
+  }));
+  document.querySelectorAll('[data-space-home]').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    history.pushState(null, '', '#visao-geral');
+    show('visao-geral');
+  }));
+  window.addEventListener('popstate', () => show(location.hash.slice(1)));
+  show(location.hash.slice(1));
+})();
+</script>
+{% endblock %}
