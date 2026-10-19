@@ -1,32 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261019h') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261019i') }}">{% endblock %}
 {% block body %}
 {% set areas = [
-  ('financeiro', 'Financeiro', [
-    ('Contas a pagar', ['Fluxo do contas a pagar','Formas de lançamento: pedido, contrato, previsão e títulos','Controle de adiantamento','Controle de saldo de credores','Documentos vencidos e baixas','Automação de processos','Pagamento escritural e DDA']),
-    ('Contas a receber', ['Fluxo do contas a receber','Origem e títulos','Particularidades do processo','Investidores','Crédito associativo','Automação de processos','Cobrança escritural']),
-    ('Conciliação bancária', ['Mapeamento de contas ativas','Janelas de conciliação','Consistência de saldo','Automação de processos','Plano de ação'])
-  ]),
-  ('comercial', 'Comercial', [
-    ('Comercial', ['Unidades','Controle de contratos','Levantamento','Lançamento','Auditoria'])
-  ]),
   ('seguranca', 'Segurança', [
     ('Sienge Plataforma', ['Levantamento de usuários','Levantamento de perfis','Levantamento de autorizações: empresa, obra, suprimentos, financeiro e centro de custo','Gestão de usuários']),
     ('Sienge Integração', ['Análise da documentação de sistemas parceiros','Cadastro de usuário com validação crítica em Cyber Segurança','Liberação de endpoint','Ambiente para controle de APIs e datalake com acesso por usuário'])
   ]),
-  ('gerencial', 'Gerencial', [
-    ('Gestão gerencial', ['Gerencial financeiro','Gerencial de obras','Gerencial de suprimentos','Produtos PlanSmart','Desenvolvimento sob demanda']),
-    ('Viabilidade de negócios', ['Viabilidade de empreendimento','Acompanhamento de viabilidade']),
-    ('Orçamento empresarial', ['Estruturação com base de backoffice definida','Montagem do orçamento empresarial anual'])
-  ]),
-  ('contabilidade', 'Contabilidade', [
-    ('Integração contábil', ['Acompanhamento de todo o processo para integração contábil','Plano contábil','Configuração de documentos','Estabilização de layout'])
-  ]),
-  ('suprimentos', 'Suprimentos', [
-    ('Compras', ['Processo de compras','Alçadas e autorizações']),
-    ('Contratos e medições', ['Processo de contratos e medições','Alçadas e autorizações']),
-    ('Controle de estoque', ['Estruturação','Implantação','Acompanhamento'])
+  ('configuracoes', 'Configurações e Parametrizações', [
+    ('Configurações e Parametrizações', ['Configurações de base','Estruturas de controle','Estruturas hierárquicas','Parametrizações','Parâmetros gerais do Sienge'])
   ]),
   ('processos', 'Análise, diagnóstico e estruturação de processos', [
     ('Análise e diagnóstico', ['Entendimento da estrutura de negócios da empresa','Dores e metas','Projeção para o futuro']),
@@ -39,12 +21,33 @@
     ('Serviços', ['Conceito de preço informado','Conceito de preço composto','Conceito de serviço auxiliar']),
     ('Orçamento', ['Lançamento e manutenção','Acompanhamento e evolução'])
   ]),
-  ('desenvolvimento', 'Desenvolvimento', [
-    ('Desenvolvimento de sistemas e rotinas sob demanda', ['Planilhas de tabulação','Arquivos para importação e exportação Sienge','Input e output de dados']),
-    ('Produtos de gestão desenvolvidos pela PlanSmart', ['Gestão da Engenharia','Gestão Integrada','Contas a Receber','Contas a Pagar','Comercial','PS Mastermind','PS Voice','PS Finance'])
+  ('suprimentos', 'Suprimentos', [
+    ('Compras', ['Processo de compras','Alçadas e autorizações']),
+    ('Contratos e medições', ['Processo de contratos e medições','Alçadas e autorizações']),
+    ('Controle de estoque', ['Estruturação','Implantação','Acompanhamento'])
+  ]),
+  ('comercial', 'Comercial', [
+    ('Comercial', ['Unidades','Controle de contratos','Levantamento','Lançamento','Auditoria'])
+  ]),
+  ('financeiro', 'Financeiro', [
+    ('Contas a pagar', ['Fluxo do contas a pagar','Formas de lançamento: pedido, contrato, previsão e títulos','Controle de adiantamento','Controle de saldo de credores','Documentos vencidos e baixas','Automação de processos','Pagamento escritural e DDA']),
+    ('Contas a receber', ['Fluxo do contas a receber','Origem e títulos','Particularidades do processo','Investidores','Crédito associativo','Automação de processos','Cobrança escritural']),
+    ('Conciliação bancária', ['Mapeamento de contas ativas','Janelas de conciliação','Consistência de saldo','Automação de processos','Plano de ação'])
   ]),
   ('automacao', 'Automação nativa Sienge', [
     ('Automação bancária', ['Desenvolvimento de layout bancário','Cobrança escritural','Pagamento escritural','DDA','Conciliação bancária'])
+  ]),
+  ('gerencial', 'Gerencial', [
+    ('Gestão gerencial', ['Gerencial financeiro','Gerencial de obras','Gerencial de suprimentos','Produtos PlanSmart','Desenvolvimento sob demanda']),
+    ('Viabilidade de negócios', ['Viabilidade de empreendimento','Acompanhamento de viabilidade']),
+    ('Orçamento empresarial', ['Estruturação com base de backoffice definida','Montagem do orçamento empresarial anual'])
+  ]),
+  ('contabilidade', 'Contabilidade', [
+    ('Integração contábil', ['Acompanhamento de todo o processo para integração contábil','Plano contábil','Configuração de documentos','Estabilização de layout'])
+  ]),
+  ('desenvolvimento', 'Desenvolvimento', [
+    ('Desenvolvimento de sistemas e rotinas sob demanda', ['Planilhas de tabulação','Arquivos para importação e exportação Sienge','Input e output de dados']),
+    ('Produtos de gestão desenvolvidos pela PlanSmart', ['Gestão da Engenharia','Gestão Integrada','Contas a Receber','Contas a Pagar','Comercial','PS Mastermind','PS Voice','PS Finance'])
   ])
 ] %}
 <div class="scope-shell">

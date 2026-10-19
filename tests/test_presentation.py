@@ -62,14 +62,37 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert "Desenvolvimento de sistemas e rotinas sob demanda" in response.text
     assert "Planilhas de tabulação" in response.text
     assert "PS Finance" in response.text
+    assert "Configurações e Parametrizações" in response.text
+    assert "Configurações de base" in response.text
+    assert "Estruturas de controle" in response.text
+    assert "Estruturas hierárquicas" in response.text
+    assert "Parâmetros gerais do Sienge" in response.text
     assert "Voltar ao sistema solar" in response.text
     assert 'data-space-target="financeiro"' in response.text
     assert 'data-space-view="visao-geral"' in response.text
-    assert response.text.count('class="scope-index-planet ') == 10
-    assert response.text.count('class="planet planet-') == 23
+    assert response.text.count('class="scope-index-planet ') == 11
+    assert response.text.count('class="planet planet-') == 24
+    expected_orbital_order = [
+        "seguranca",
+        "configuracoes",
+        "processos",
+        "engenharia",
+        "suprimentos",
+        "comercial",
+        "financeiro",
+        "automacao",
+        "gerencial",
+        "contabilidade",
+        "desenvolvimento",
+    ]
+    orbital_positions = [
+        response.text.index(f'data-space-target="{slug}"')
+        for slug in expected_orbital_order
+    ]
+    assert orbital_positions == sorted(orbital_positions)
     assert "Selecione um núcleo para viajar" not in response.text
     assert 'aria-label="Áreas da apresentação"' not in response.text
-    assert "presentation.css?v=20261019h" in response.text
+    assert "presentation.css?v=20261019i" in response.text
     assert "Os 10 núcleos representam" not in response.text
     assert 'class="scope-index-orbit"' in response.text
     assert 'class="scope-core-mark"' not in response.text
