@@ -69,5 +69,7 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert response.text.count('class="planet planet-') == 23
     assert "Selecione um núcleo para viajar" not in response.text
     assert 'aria-label="Áreas da apresentação"' not in response.text
+    assert "presentation.css?v=20261019c" in response.text
+    assert 'class="scope-core-mark"' in response.text
     assert "Agendar" not in response.text
     access.assert_called_once_with(1, "consultoria-ps")
