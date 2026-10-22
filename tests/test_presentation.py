@@ -1,4 +1,5 @@
 from unittest.mock import patch
+from types import SimpleNamespace
 
 from flask_login import FlaskLoginClient
 
@@ -92,7 +93,9 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert orbital_positions == sorted(orbital_positions)
     assert "Selecione um núcleo para viajar" not in response.text
     assert 'aria-label="Áreas da apresentação"' not in response.text
-    assert "presentation.css?v=20261022c" in response.text
+    assert "presentation.css?v=20261022d" in response.text
+    assert 'class="scope-header"' not in response.text
+    assert 'class="scope-brand"' not in response.text
     assert 'class="spacecraft"' in response.text
     assert 'class="flight-path"' in response.text
     assert 'class="warp-burst"' in response.text
@@ -109,3 +112,24 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert 'class="scope-core-mark"' not in response.text
     assert "Agendar" not in response.text
     access.assert_called_once_with(1, "consultoria-ps")
+
+
+def test_consulting_ecosystem_opens_in_new_tab_from_applications():
+    client, user = _authenticated_client()
+    application = SimpleNamespace(
+        code="consultoria-ps",
+        name="Ecossistema PlanSmart",
+        description="Apresentação privada",
+        url="/apresentacao/consultoria",
+    )
+
+    with (
+        patch("app.repositories.user_repository.UserRepository.find_active_by_id", return_value=user),
+        patch("app.controllers.auth_controller.CatalogService.applications_for_user", return_value=[application]),
+    ):
+        response = client.get("/acesso/aplicacoes")
+
+    assert response.status_code == 200
+    assert 'href="/apresentacao/consultoria" target="_blank"' in response.text
+    assert 'rel="noopener noreferrer"' in response.text
+    assert 'aria-label="Abrir Ecossistema PlanSmart em nova guia"' in response.text

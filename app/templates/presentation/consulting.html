@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261022c') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261022d') }}">{% endblock %}
 {% block body %}
 {% set areas = [
   ('seguranca', 'Segurança', [
@@ -53,11 +53,6 @@
 <div class="scope-shell">
   <div class="cosmic-streak cosmic-streak-one" aria-hidden="true"></div>
   <div class="cosmic-streak cosmic-streak-two" aria-hidden="true"></div>
-  <header class="scope-header">
-    <a href="#visao-geral" class="scope-brand" data-space-home><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
-    <span class="scope-private">Apresentação privada</span>
-  </header>
-
   <main>
     <section class="scope-intro space-view is-active" id="visao-geral" data-space-view="visao-geral">
       <p class="eyebrow">Escopo da consultoria PlanSmart</p>

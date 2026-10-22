@@ -10,7 +10,7 @@
     <p class="eyebrow">Área do cliente</p>
     <h1 id="apps-title">Olá, {{ current_user.name }}.</h1>
     {% if applications %}
-      <div class="application-grid">{% for application in applications %}<a class="application-card" href="{{ application.url }}"><h2>{{ application.name }}</h2><p>{{ application.description }}</p><span>Acessar →</span></a>{% endfor %}</div>
+      <div class="application-grid">{% for application in applications %}<a class="application-card" href="{{ application.url }}"{% if application.code == 'consultoria-ps' %} target="_blank" rel="noopener noreferrer" aria-label="Abrir {{ application.name }} em nova guia"{% endif %}><h2>{{ application.name }}</h2><p>{{ application.description }}</p><span>Acessar →</span></a>{% endfor %}</div>
     {% else %}
       <div class="empty-state"><h2>Nenhuma aplicação liberada.</h2><p>Fale com a PlanSmart para solicitar acesso.</p></div>
     {% endif %}
