@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261022a') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261022b') }}">{% endblock %}
 {% block body %}
 {% set areas = [
   ('seguranca', 'Segurança', [
@@ -51,6 +51,8 @@
   ])
 ] %}
 <div class="scope-shell">
+  <div class="cosmic-streak cosmic-streak-one" aria-hidden="true"></div>
+  <div class="cosmic-streak cosmic-streak-two" aria-hidden="true"></div>
   <header class="scope-header">
     <a href="#visao-geral" class="scope-brand" data-space-home><img src="{{ url_for('static', filename='img/plansmart-logo-oficial.png') }}" alt="PlanSmart"></a>
     <span class="scope-private">Apresentação privada</span>
@@ -65,6 +67,8 @@
         <div class="scope-index-core"><strong>PlanSmart</strong><small>visão integrada</small></div>
         {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}" data-space-target="{{ slug }}"><span>Explorar</span>{{ title }}</a>{% endfor %}
         <svg class="flight-path" aria-hidden="true"><path></path></svg>
+        <div class="warp-burst" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="arrival-flash" aria-hidden="true"></div>
         <div class="spacecraft" aria-hidden="true">
           <svg viewBox="0 0 80 44" role="presentation">
             <path class="spacecraft-glow" d="M8 22 1 13v18z"/>
@@ -114,10 +118,12 @@
   const map = document.querySelector('.scope-index');
   const spacecraft = map?.querySelector('.spacecraft');
   const flightPath = map?.querySelector('.flight-path path');
+  const warpBurst = map?.querySelector('.warp-burst');
+  const arrivalFlash = map?.querySelector('.arrival-flash');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let traveling = false;
   const flyTo = async link => {
-    if (!map || !spacecraft || !flightPath || reducedMotion.matches) return;
+    if (!map || !spacecraft || !flightPath || !warpBurst || !arrivalFlash || reducedMotion.matches) return;
     traveling = true;
     const mapBox = map.getBoundingClientRect();
     const fromBox = map.querySelector('.scope-index-core').getBoundingClientRect();
@@ -133,6 +139,10 @@
     const pathLength = flightPath.getTotalLength();
     flightPath.style.strokeDasharray = pathLength;
     flightPath.style.strokeDashoffset = pathLength;
+    warpBurst.style.left = `${end.x}px`;
+    warpBurst.style.top = `${end.y}px`;
+    arrivalFlash.style.setProperty('--arrival-x', `${end.x}px`);
+    arrivalFlash.style.setProperty('--arrival-y', `${end.y}px`);
     map.classList.add('is-traveling');
     link.classList.add('is-destination');
     spacecraft.style.display = 'block';
@@ -149,7 +159,25 @@
       ],
       {duration: 1050, easing: 'cubic-bezier(.3,.05,.2,1)', fill: 'forwards'}
     );
-    await Promise.allSettled([pathAnimation.finished, shipAnimation.finished]);
+    const burstAnimation = warpBurst.animate(
+      [
+        {transform: 'translate(-50%,-50%) scale(.2)', opacity: 0},
+        {transform: 'translate(-50%,-50%) scale(.2)', opacity: 0, offset: .55},
+        {transform: 'translate(-50%,-50%) scale(1)', opacity: 1, offset: .78},
+        {transform: 'translate(-50%,-50%) scale(1.8)', opacity: 0}
+      ],
+      {duration: 1050, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards'}
+    );
+    const flashAnimation = arrivalFlash.animate(
+      [
+        {opacity: 0},
+        {opacity: 0, offset: .72},
+        {opacity: .92, offset: .88},
+        {opacity: 0}
+      ],
+      {duration: 1050, easing: 'ease-out', fill: 'forwards'}
+    );
+    await Promise.allSettled([pathAnimation.finished, shipAnimation.finished, burstAnimation.finished, flashAnimation.finished]);
     spacecraft.style.display = 'none';
     link.classList.remove('is-destination');
     map.classList.remove('is-traveling');

@@ -92,9 +92,12 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert orbital_positions == sorted(orbital_positions)
     assert "Selecione um núcleo para viajar" not in response.text
     assert 'aria-label="Áreas da apresentação"' not in response.text
-    assert "presentation.css?v=20261022a" in response.text
+    assert "presentation.css?v=20261022b" in response.text
     assert 'class="spacecraft"' in response.text
     assert 'class="flight-path"' in response.text
+    assert 'class="warp-burst"' in response.text
+    assert 'class="arrival-flash"' in response.text
+    assert 'class="cosmic-streak cosmic-streak-one"' in response.text
     assert "prefers-reduced-motion: reduce" in response.text
     assert "const flyTo = async link" in response.text
     assert "Os 10 núcleos representam" not in response.text
