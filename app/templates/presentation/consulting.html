@@ -168,7 +168,7 @@
     focusLayer.classList.add('is-open');
     focusLayer.setAttribute('aria-hidden', 'false');
     document.body.classList.add('card-presentation-open');
-    focusClose.focus();
+    requestAnimationFrame(() => focusClose.focus());
   };
   const closeCard = () => {
     if (!focusLayer?.classList.contains('is-open')) return;
