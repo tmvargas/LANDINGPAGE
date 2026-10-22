@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261019j') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261022a') }}">{% endblock %}
 {% block body %}
 {% set areas = [
   ('seguranca', 'Segurança', [
@@ -64,6 +64,15 @@
         <div class="scope-index-orbit" aria-hidden="true"></div>
         <div class="scope-index-core"><strong>PlanSmart</strong><small>visão integrada</small></div>
         {% for slug, title, planets in areas %}<a class="scope-index-planet p{{ loop.index }}" href="#{{ slug }}" data-space-target="{{ slug }}"><span>Explorar</span>{{ title }}</a>{% endfor %}
+        <svg class="flight-path" aria-hidden="true"><path></path></svg>
+        <div class="spacecraft" aria-hidden="true">
+          <svg viewBox="0 0 80 44" role="presentation">
+            <path class="spacecraft-glow" d="M8 22 1 13v18z"/>
+            <path class="spacecraft-body" d="M10 22 35 5l34 17-34 17z"/>
+            <path class="spacecraft-window" d="M36 14 53 22 36 30c-5-5-5-11 0-16Z"/>
+            <path class="spacecraft-wing" d="m29 10-8-9 27 11m-19 22-8 9 27-11"/>
+          </svg>
+        </div>
       </div>
     </section>
 
@@ -102,9 +111,55 @@
     document.body.classList.toggle('exploring-nucleus', destination !== 'visao-geral');
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
-  document.querySelectorAll('[data-space-target]').forEach(link => link.addEventListener('click', event => {
+  const map = document.querySelector('.scope-index');
+  const spacecraft = map?.querySelector('.spacecraft');
+  const flightPath = map?.querySelector('.flight-path path');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let traveling = false;
+  const flyTo = async link => {
+    if (!map || !spacecraft || !flightPath || reducedMotion.matches) return;
+    traveling = true;
+    const mapBox = map.getBoundingClientRect();
+    const fromBox = map.querySelector('.scope-index-core').getBoundingClientRect();
+    const toBox = link.getBoundingClientRect();
+    const start = {x: fromBox.left + fromBox.width / 2 - mapBox.left, y: fromBox.top + fromBox.height / 2 - mapBox.top};
+    const end = {x: toBox.left + toBox.width / 2 - mapBox.left, y: toBox.top + toBox.height / 2 - mapBox.top};
+    const distance = Math.hypot(end.x - start.x, end.y - start.y);
+    const bend = Math.min(135, Math.max(70, distance * .22));
+    const control = {x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 - bend};
+    const angle = Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI;
+    const translate = point => `translate(${point.x}px,${point.y}px) translate(-50%,-50%) rotate(${angle}deg)`;
+    flightPath.setAttribute('d', `M ${start.x} ${start.y} Q ${control.x} ${control.y} ${end.x} ${end.y}`);
+    const pathLength = flightPath.getTotalLength();
+    flightPath.style.strokeDasharray = pathLength;
+    flightPath.style.strokeDashoffset = pathLength;
+    map.classList.add('is-traveling');
+    link.classList.add('is-destination');
+    spacecraft.style.display = 'block';
+    const pathAnimation = flightPath.animate(
+      [{strokeDashoffset: pathLength, opacity: 0}, {opacity: 1, offset: .18}, {strokeDashoffset: 0, opacity: .8, offset: .82}, {strokeDashoffset: 0, opacity: 0}],
+      {duration: 1050, easing: 'cubic-bezier(.3,.05,.2,1)', fill: 'forwards'}
+    );
+    const shipAnimation = spacecraft.animate(
+      [
+        {transform: translate(start), opacity: 0, filter: 'blur(2px)'},
+        {transform: `${translate(start)} scale(1)`, opacity: 1, filter: 'blur(0)', offset: .12},
+        {transform: `${translate(control)} scale(1.18)`, opacity: 1, offset: .56},
+        {transform: `${translate(end)} scale(.65)`, opacity: 0, filter: 'blur(1px)'}
+      ],
+      {duration: 1050, easing: 'cubic-bezier(.3,.05,.2,1)', fill: 'forwards'}
+    );
+    await Promise.allSettled([pathAnimation.finished, shipAnimation.finished]);
+    spacecraft.style.display = 'none';
+    link.classList.remove('is-destination');
+    map.classList.remove('is-traveling');
+    traveling = false;
+  };
+  document.querySelectorAll('[data-space-target]').forEach(link => link.addEventListener('click', async event => {
     event.preventDefault();
+    if (traveling) return;
     const target = link.dataset.spaceTarget;
+    await flyTo(link);
     history.pushState(null, '', `#${target}`);
     show(target);
   }));
