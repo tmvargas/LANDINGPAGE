@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Escopo da Consultoria | PlanSmart{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261022b') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/presentation.css', v='20261022c') }}">{% endblock %}
 {% block body %}
 {% set areas = [
   ('seguranca', 'Segurança', [
@@ -90,7 +90,7 @@
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
         <div class="solar-core"><small>Núcleo</small><strong>{{ title }}</strong></div>
         {% for planet_title, activities in planets %}
-        <article class="planet planet-{{ loop.index }}">
+        <article class="planet planet-{{ loop.index }}" tabindex="0" role="button" data-presentation-card data-nucleus="{{ title }}" aria-label="Ampliar {{ planet_title }}">
           <div class="planet-head"><span>{{ '%02d'|format(loop.index) }}</span><h3>{{ planet_title }}</h3></div>
           <ul>{% for activity in activities %}<li>{{ activity }}</li>{% endfor %}</ul>
         </article>
@@ -100,6 +100,25 @@
     {% endfor %}
 
   </main>
+  <div class="card-focus" data-card-focus aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="card-focus-title">
+    <button class="card-focus-backdrop" type="button" data-card-close tabindex="-1" aria-label="Fechar apresentação"></button>
+    <section class="card-focus-panel">
+      <div class="card-focus-topline">
+        <div><p data-card-nucleus></p><span>Detalhamento do sistema</span></div>
+        <button class="card-focus-close" type="button" data-card-close aria-label="Fechar apresentação">×</button>
+      </div>
+      <div class="card-focus-content">
+        <span class="card-focus-number" data-card-number></span>
+        <h2 id="card-focus-title" data-card-title></h2>
+        <div class="card-focus-list" data-card-list></div>
+      </div>
+      <div class="card-focus-navigation">
+        <button type="button" data-card-previous><span>←</span> Anterior</button>
+        <span data-card-position></span>
+        <button type="button" data-card-next>Próximo <span>→</span></button>
+      </div>
+    </section>
+  </div>
 </div>
 <script>
 (() => {
@@ -121,6 +140,60 @@
   const warpBurst = map?.querySelector('.warp-burst');
   const arrivalFlash = map?.querySelector('.arrival-flash');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const focusLayer = document.querySelector('[data-card-focus]');
+  const focusTitle = focusLayer?.querySelector('[data-card-title]');
+  const focusNucleus = focusLayer?.querySelector('[data-card-nucleus]');
+  const focusNumber = focusLayer?.querySelector('[data-card-number]');
+  const focusList = focusLayer?.querySelector('[data-card-list]');
+  const focusPosition = focusLayer?.querySelector('[data-card-position]');
+  const focusClose = focusLayer?.querySelector('.card-focus-close');
+  let focusedCard = null;
+  let nucleusCards = [];
+  let focusedCardIndex = 0;
+  const renderFocusedCard = card => {
+    focusedCard = card;
+    nucleusCards = [...card.closest('.solar-system').querySelectorAll('[data-presentation-card]')];
+    focusedCardIndex = nucleusCards.indexOf(card);
+    focusNucleus.textContent = card.dataset.nucleus;
+    focusTitle.textContent = card.querySelector('h3').textContent.trim();
+    focusNumber.textContent = String(focusedCardIndex + 1).padStart(2, '0');
+    focusList.replaceChildren(card.querySelector('ul').cloneNode(true));
+    focusPosition.textContent = `${focusedCardIndex + 1} de ${nucleusCards.length}`;
+    focusLayer.querySelector('[data-card-previous]').disabled = nucleusCards.length < 2;
+    focusLayer.querySelector('[data-card-next]').disabled = nucleusCards.length < 2;
+  };
+  const openCard = card => {
+    if (!focusLayer) return;
+    renderFocusedCard(card);
+    focusLayer.classList.add('is-open');
+    focusLayer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('card-presentation-open');
+    focusClose.focus();
+  };
+  const closeCard = () => {
+    if (!focusLayer?.classList.contains('is-open')) return;
+    focusLayer.classList.remove('is-open');
+    focusLayer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('card-presentation-open');
+    focusedCard?.focus();
+  };
+  document.querySelectorAll('[data-presentation-card]').forEach(card => {
+    card.addEventListener('click', () => openCard(card));
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openCard(card);
+      }
+    });
+  });
+  focusLayer?.querySelectorAll('[data-card-close]').forEach(button => button.addEventListener('click', closeCard));
+  focusLayer?.querySelector('[data-card-previous]')?.addEventListener('click', () => renderFocusedCard(nucleusCards[(focusedCardIndex - 1 + nucleusCards.length) % nucleusCards.length]));
+  focusLayer?.querySelector('[data-card-next]')?.addEventListener('click', () => renderFocusedCard(nucleusCards[(focusedCardIndex + 1) % nucleusCards.length]));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeCard();
+    if (event.key === 'ArrowLeft' && focusLayer?.classList.contains('is-open') && nucleusCards.length > 1) renderFocusedCard(nucleusCards[(focusedCardIndex - 1 + nucleusCards.length) % nucleusCards.length]);
+    if (event.key === 'ArrowRight' && focusLayer?.classList.contains('is-open') && nucleusCards.length > 1) renderFocusedCard(nucleusCards[(focusedCardIndex + 1) % nucleusCards.length]);
+  });
   let traveling = false;
   const flyTo = async link => {
     if (!map || !spacecraft || !flightPath || !warpBurst || !arrivalFlash || reducedMotion.matches) return;
