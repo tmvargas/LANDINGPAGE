@@ -63,7 +63,8 @@ def test_consulting_presentation_renders_for_authorized_user():
     assert "Desenvolvimento de sistemas e rotinas sob demanda" in response.text
     assert "Planilhas de tabulação" in response.text
     assert "PS Finance" in response.text
-    assert "PS DMZ - CYBER SECURITY" in response.text
+    assert "PS DMZ - Cyber Security" in response.text
+    assert "PS DMZ - CYBER SECURITY" not in response.text
     assert "Configurações e Parametrizações" in response.text
     assert "Configurações de base" in response.text
     assert "Estruturas de controle" in response.text
